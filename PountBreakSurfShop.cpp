@@ -11,6 +11,7 @@
 using namespace std;
 
 // Constants
+const float PRICEXXXS = 40.00f;
 const float PRICESMALL = 175.00f;
 const float PRICEMEDIUM = 190.00f;
 const float PRICELARGE = 200.00f;
@@ -26,15 +27,19 @@ void ShowUsage()
     cout << endl;
 }
 
-void MakePurchase(int& iTotalSmall, int& iTotalMedium, int& iTotalLarge)
+void MakePurchase(int& iTotalSmall, int& iTotalMedium, int& iTotalLarge, int& iTotalXSmall)
 {
     int iNumOf;
     char cSize;
 
-    cout << "Please enter the quanity and type (S = small, M = medium, L = large) of surfboard you would like to purchase:  " << endl;
+    cout << "Please enter the quanity and type (X = XXX small, S = small, M = medium, L = large) of surfboard you would like to purchase:  " << endl;
     cin >> iNumOf >> cSize;
 
-    if (cSize == 'S' || cSize == 's')
+    if (cSize == 'X' || cSize == 'x')
+    {
+        iTotalXSmall = iTotalXSmall + iNumOf;
+    }
+    else if (cSize == 'S' || cSize == 's')
     {
         iTotalSmall = iTotalSmall + iNumOf;
     }
@@ -57,31 +62,36 @@ void MakePurchase(int& iTotalSmall, int& iTotalMedium, int& iTotalLarge)
      cout << endl;
 }
 
-void DisplayPurchase(const int iTotalSmall, const int iTotalMedium, const int iTotalLarge)
+void DisplayPurchase(const int iTotalSmall, const int iTotalMedium, const int iTotalLarge, const int iTotalXSmall)
 {
     string s1 = "The total number of ";
     string s2 = " surfboards is ";
 
+    if (iTotalXSmall > 0)
+        cout << s1 << "squirrel sized" << s2 << iTotalXSmall << endl;
     if (iTotalSmall > 0)
         cout << s1 << "small" << s2 << iTotalSmall << endl;
     if (iTotalMedium > 0)
         cout << s1 << "medium" << s2 << iTotalMedium << endl;
     if (iTotalLarge > 0)
         cout << s1 << "large" << s2 << iTotalLarge << endl;
-    if (iTotalLarge == 0 && iTotalMedium == 0 && iTotalSmall == 0)
+    if (iTotalLarge == 0 && iTotalMedium == 0 && iTotalSmall == 0 && iTotalXSmall == 0)
         cout << "No purchases made yet." << endl;
     cout << endl;
 }
 
-void DisplayTotal(const int iTotalSmall, const int iTotalMedium, const int iTotalLarge)
+void DisplayTotal(const int iTotalSmall, const int iTotalMedium, const int iTotalLarge, const int iTotalXSmall)
 {
+    float fXSmallCost;
     float fSmallCost;
     float fMediumCost;
     float fLargeCost;
-    if (iTotalLarge == 0 && iTotalMedium == 0 && iTotalSmall == 0)
+
+    if (iTotalLarge == 0 && iTotalMedium == 0 && iTotalSmall == 0 && iTotalXSmall == 0)
         cout << "No purchases made yet." << endl;
     else
     {
+        fXSmallCost = iTotalXSmall * PRICEXXXS;
         fSmallCost = iTotalSmall * PRICESMALL;
         fMediumCost = iTotalMedium * PRICEMEDIUM;
         fLargeCost = iTotalLarge * PRICELARGE;
@@ -90,6 +100,8 @@ void DisplayTotal(const int iTotalSmall, const int iTotalMedium, const int iTota
         string s4 = " surfboards is ";
         string s5 = " at a total of $";
 
+        if (iTotalXSmall > 0)
+            cout << fixed << setprecision(2) << s3 << "squirrel sized" << s4 << iTotalXSmall << s5 << fSmallCost << endl;
         if (iTotalSmall > 0)
             cout << fixed << setprecision(2) << s3 << "small" << s4 << iTotalSmall << s5 << fSmallCost << endl;
         if (iTotalMedium > 0)
@@ -106,6 +118,7 @@ int main()
 {
     // VARIABLES
     char cUserIn = 'S';
+    int iTotalXSmall = 0;
     int iTotalSmall = 0;
     int iTotalMedium = 0;
     int iTotalLarge = 0;
@@ -123,11 +136,11 @@ int main()
         if (cUserIn == 'S' || cUserIn == 's')
             ShowUsage();
         else if (cUserIn == 'P' || cUserIn == 'p')
-            MakePurchase(iTotalSmall, iTotalMedium, iTotalLarge);
+            MakePurchase(iTotalSmall, iTotalMedium, iTotalLarge, iTotalXSmall);
         else if (cUserIn == 'C' || cUserIn == 'c')
-            DisplayPurchase(iTotalSmall, iTotalMedium, iTotalLarge);
+            DisplayPurchase(iTotalSmall, iTotalMedium, iTotalLarge, iTotalXSmall);
         else if (cUserIn == 'T' || cUserIn == 't')
-            DisplayTotal(iTotalSmall, iTotalMedium, iTotalLarge);
+            DisplayTotal(iTotalSmall, iTotalMedium, iTotalLarge, iTotalXSmall);
         else if (cUserIn == 'Q' || cUserIn == 'q')
         {
             cout << "Thank you" << endl;
